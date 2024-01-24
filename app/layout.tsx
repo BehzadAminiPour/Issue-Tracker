@@ -7,7 +7,7 @@ import { Theme } from "@radix-ui/themes";
 import Navbar from "./Navbar";
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ["latin"], 
   variable: "--font-inter",
 });
 
