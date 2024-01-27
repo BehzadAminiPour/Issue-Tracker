@@ -18,6 +18,7 @@ type IssueForm = z.infer<typeof createIssueSchema>;
 const NewIssuePage = () => {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
   const {
     register,
