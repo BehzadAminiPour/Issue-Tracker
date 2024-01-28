@@ -8,13 +8,13 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createIssueSchema } from "@/app/validationSchema";
+import { issueSchema } from "@/app/validationSchema";
 import { z } from "zod";
 import ErrorMessage from "@/app/components/ErrorMessage";
 import Spinner from "@/app/components/Spinner";
 import { Issue } from "@prisma/client";
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [error, setError] = useState("");
@@ -27,7 +27,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
   });
 
   return (
@@ -45,6 +45,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
             if (issue) await axios.patch("/api/issues" + issue.id, data);
             else await axios.post("/api/issues", data);
             router.push("/issues");
+            router.refresh();
           } catch (error) {
             setIsSubmitting(false);
             setError("An unexpected error occurred.");
@@ -69,7 +70,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button disabled={isSubmitting}>
-          {issue ? "Update Issue" : "Submit New Issue"}{' '}
+          {issue ? "Update Issue" : "Submit New Issue"}{" "}
           {isSubmitting && <Spinner />}
         </Button>
       </form>
